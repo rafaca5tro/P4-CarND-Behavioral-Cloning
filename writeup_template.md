@@ -18,16 +18,14 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image1]: ./examples/architecture.png "Architecture"
+[image2]: ./examples/Figure_1.png "Visualizing loss Epochs"
+
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+---
+I created a local environment in a MACOS Big Sur, Mid 2017. Please review the requirements in the file [environment.yml](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/environment-plaidml-keras.yml). *Please note that you can skip the plaidml-keras step, since this was requirerd to run DL capabilities on my mac only*
 
 ---
 ### Files Submitted & Code Quality
@@ -54,76 +52,34 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model is based on NVIDIA Autonomous vehicle team architectures, that introduces a normalization using Keras lambda layer (code line 86 ) after cropping the orinal input from 3@160x320 to 3@66x200 (code line 83), please note in the code, that I also choosed a pixel h/w/left/righ discrimination (74,20,60,60) and explored/evaluated several scenarios regarding this and other preprocessing.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+Also consist of five convulotional layers, three with a minimun (0.1) dropout, followed by four fully connected layers, and since the dimensions are changing between some of the convolutional layers, I was evaluating the trade of including/removing each of them comparing the loss for training and validation. The activation function I rely on is ReLu, for introducing nonlinearity (code lines 82 101 )
 
-#### 2. Attempts to reduce overfitting in the model
+#### 2. Attempts to reduce overfitting in the model and data selection
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+As stated above, the model contains 3 dropout layers in order to reduce overfitting (model.py lines 89 91 93). 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track, however the first attempts took me a while since I tried different scenarios (own data set, new own data set including 2nd track, udacity data, udacity data augmented). I felt confortable using an augmented data from the original udacity data set, since I realized later on that other possible scenarios during the traing could be used (example: recovering from left deviation, obstacles, driving orientation, etc). I must say was quite challenging to learn to get the sense of how much data/time of training you would need , in order to prevent under/over fitting.  
+
+I used this training data for training the model. I finally randomly shuffled the data set and put 20% of the data into a validation set.The validation set helped determine if the model was over or under fitting. The batch size was 32, and the ideal number of epochs was 7. I tried also with 3,4,5,10 having underfitting in (3,4), just enough with 5 (however the car drives off side of some points on the rodad) and not significative difference between *7* and 10 other that increasing computationa cost.
+
+*Note: Fig 1.1 Visualized loss with 3 epochs*
+![alt text][image2]
+
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 104).
 
-#### 4. Appropriate training data
+ 
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
-
-For details about how I created the training data, see the next section. 
-
-### Model Architecture and Training Strategy
-
-#### 1. Solution Design Approach
-
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-#### 2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+### Model Architecture 
 
 ![alt text][image1]
 
-#### 3. Creation of the Training Set & Training Process
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+The models satisfied me in general terms, however eager to continue looking forward to improve and investigating similar approaches.
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
