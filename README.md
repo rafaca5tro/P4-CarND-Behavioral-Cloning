@@ -11,7 +11,7 @@ Detailed information of this project can be found at the [writeup template](http
 To meet specifications, th submission consist in five files: 
 * [model.py](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/model.py) (script used to create and train the model)
 * [drive.py](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/drive.py)  (script to drive the car - feel free to modify this file)
-* [model.h5](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/models/model.h5  (a trained Keras model)
+* [model.h5](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/models/  (a trained Keras model)
 * a report [writeup template](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/writeup_template.md) (either markdown or pdf)
 * [video.mp4](https://github.com/rcgonzsv/Behavioral-Cloning-P3-rcgonzsv/blob/main/drive.py) (a video recording of your vehicle driving autonomously around the track for at least one full lap)
 
